@@ -34,20 +34,14 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  // fs.readdir(exports.dataDir, (err, files) => {
-  // });
-
-  // if (err) {
-  // } else {
-  //   let todoArray = files.map((file) => {
-  //     let id = file.slice(0, 5);
-  //     let text = fs.readFile(path.join(exports.dataDir, file), (err, data))
-  //   })
-  //   callback(null, );
-  // }
-
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  fs.readdir(exports.dataDir, (err, files) => {
+    let todoArray = [];
+    files.forEach((file) => {
+      let id = file.slice(0, 5);
+      let text = id;
+      todoArray.push({id, text});
+    });
+    callback(null, todoArray);
   });
 };
 
@@ -55,18 +49,11 @@ exports.readOne = (id, callback) => {
   let filePath = path.join(exports.dataDir, `${id}.txt`);
   fs.readFile(filePath, 'utf8', (err, text) => {
     if (err) {
-      callback(new Error ('error reading data'));
+      callback(new Error ('error reading file'));
     } else {
       callback(null, { id, text });
     }
   });
-
-  // var text = items[id];
-  // if (!text) {
-  //   callback(new Error(`No item with id: ${id}`));
-  // } else {
-  //   callback(null, { id, text });
-  // }
 };
 
 exports.update = (id, text, callback) => {
