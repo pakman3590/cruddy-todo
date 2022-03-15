@@ -17,16 +17,22 @@ var items = {};
 // });
 
 exports.create = (text, callback) => {
-  let id;
-  counter.getNextUniqueId((err, uniqueId) => {
+  counter.getNextUniqueId((err, id) => {
     if (err) {
       throw ('error receiving counter');
     } else {
-      id = uniqueId;
+      let newFile = path.join(exports.dataDir, `${id}.txt`);
+      fs.writeFile(newFile, text, (err) => {
+        if (err) {
+          throw ('error writing counter');
+        } else {
+          callback(null, { id, text }); // obj is newTodo
+          // console.log(`text: ${text}`)
+          // console.log(`fileContents: ${fs.readFileSync(newFile).toString()}`)
+        }
+      });
     }
   });
-  items[id] = text;
-  callback(null, { id, text });
 };
 
 exports.readAll = (callback) => {
@@ -65,6 +71,7 @@ exports.delete = (id, callback) => {
     callback();
   }
 };
+
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
 
