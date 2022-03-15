@@ -7,8 +7,24 @@ var items = {};
 
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
+
+// (err, newTodo) => {
+//   if (err) {
+//     res.sendStatus(400);
+//   } else {
+//     res.status(201).json(newTodo);
+//   }
+// });
+
 exports.create = (text, callback) => {
-  var id = counter.getNextUniqueId();
+  let id;
+  counter.getNextUniqueId((err, uniqueId) => {
+    if (err) {
+      throw ('error receiving counter');
+    } else {
+      id = uniqueId;
+    }
+  });
   items[id] = text;
   callback(null, { id, text });
 };
