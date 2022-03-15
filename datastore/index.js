@@ -27,8 +27,6 @@ exports.create = (text, callback) => {
           throw ('error writing counter');
         } else {
           callback(null, { id, text }); // obj is newTodo
-          // console.log(`text: ${text}`)
-          // console.log(`fileContents: ${fs.readFileSync(newFile).toString()}`)
         }
       });
     }
@@ -36,19 +34,39 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
+  // fs.readdir(exports.dataDir, (err, files) => {
+  // });
+
+  // if (err) {
+  // } else {
+  //   let todoArray = files.map((file) => {
+  //     let id = file.slice(0, 5);
+  //     let text = fs.readFile(path.join(exports.dataDir, file), (err, data))
+  //   })
+  //   callback(null, );
+  // }
+
   var data = _.map(items, (text, id) => {
     return { id, text };
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  let filePath = path.join(exports.dataDir, `${id}.txt`);
+  fs.readFile(filePath, 'utf8', (err, text) => {
+    if (err) {
+      callback(new Error ('error reading data'));
+    } else {
+      callback(null, { id, text });
+    }
+  });
+
+  // var text = items[id];
+  // if (!text) {
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   callback(null, { id, text });
+  // }
 };
 
 exports.update = (id, text, callback) => {

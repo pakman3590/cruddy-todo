@@ -44,7 +44,6 @@ exports.getNextUniqueId = (callback) => {
   readCounter((err, num) => {
     let count = num + 1;
     writeCounter(count, (err, counterString) => {
-      console.log(`counterString: ${counterString}`);
       uniqueID = counterString;
       callback(err, uniqueID);
     });
